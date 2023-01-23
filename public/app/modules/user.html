@@ -1,0 +1,170 @@
+
+<ol class="breadcrumb border-bottom">
+    <li class="module_name flex-grow-1">user</li>
+</ol>
+<section class="content">
+    <div class="element-wrapper">
+        <h1 class="element-title">Add user</h1>
+        <div class="element-actions">
+            <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#add_user" ng-click="hideErrors('adduser')">
+                <i class="fas fa-plus mr-1"></i>Add user</button>
+        </div>
+    </div>
+    <div ng-if="error" id="error" class="alert alert-danger alert-white rounded">
+        <div class="icon">
+            <i class="fa fa-times-circle"></i>
+        </div>
+        <strong>Error</strong>
+        <div>
+            {{errorMsg}}
+        </div>
+    </div>
+    <div ng-if="success" id="success" class="alert alert-success alert-white rounded">
+        <div class="icon">
+            <i class="fa fa-check-circle"></i>
+        </div>
+        <strong>Success</strong>
+        <div>
+            {{successMsg}}
+        </div>
+    </div>
+    <div class="card mb-0 pb-0">
+        <div class="standard-table-header">
+            <div class="standard-table-filter border-bottom-0">
+                <div class="row">
+                    <div class="col-md-9"> </div>
+                    <div class="col-md-3 mt-2 mt-md-0 text-right">
+                        <div class="input-group input-group-sm">
+                            <input type="text" class="form-control" ng-model="page.searchBox" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-gray-grad" type="button">
+                                    <i class="fas fa-search mr-0"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body-padded">
+            <div class="table-container">
+                <table class="table table-padded">
+                    <thead>
+                        <tr>
+                            <th class="sort ascending">User Id</th>
+                            <th>Name</th>
+                            <th>Email Id</th>
+                            <th>Mobile No</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="user in users | filter:page.searchBox | startFrom: page.currentPage*page.pageSize | limitTo:page.pageSize track by $index">
+                            <td data-title="Employee Id">{{user.employeeId}}</td>
+                            <td data-title="Name">{{user.name}}</td>
+                            <td data-title="Email ID">{{user.email}}</td>
+                            <td data-title="Mobile No">{{user.mobileNo}}</td>
+                            <td data-title="Action" class="action-btn px-0">
+                                <a class="btn btn-primary-2 rounded-0 py-0"  ng-click='edit(user)'>
+                                    <i class="fas fa-edit mr-1"></i> Edit
+                                </a>
+                                <a class="btn btn-danger rounded-0 py-0" ng-click='del(user._id)'>
+                                    <i class="fas fa-trash-alt mr-1" ></i> Delete
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div ng-if="users" class="standard-table-footer">
+            <div class="row">
+                <div class="col-sm-4">
+                    <select class="per-page" ng-model="page.pageSize" ng-init="page.pageSize='5'" id="page.pageSize">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                    <span>per page</span>
+                </div>
+                <div class="col-sm-8 text-right">
+                    <span class="d-none">1-2 of 2</span>
+                    <button class="arrow-btn " ng-disabled="!page.currentPage" ng-click="firstPage()">
+                        <i class="fas fa-angle-double-left"></i>
+                    </button>
+                    <button class="arrow-btn" ng-disabled="!page.currentPage" ng-click="previousPage()">
+                        <i class="fas fa-angle-left"></i>
+                    </button>
+                    <span class="span-box">{{currentPage+1}}</span>
+                    <span class="span-count">of {{numberOfPages()}}</span>
+                    <button class="arrow-btn" ng-disabled="page.currentPage >= getData().length/page.pageSize - 1" ng-click="nextPage()">
+                        <i class="fas fa-angle-right"></i>
+                    </button>
+                    <button class="arrow-btn" ng-disabled="page.currentPage == Math.ceil(getData().length/page.pageSize) - 1" ng-click="lastPage()">
+                        <i class="fas fa-angle-double-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Modal -->
+<div class="modal fade " id="add_user" tabindex="-1" role="dialog" aria-labelledby="add_user_modal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="add_user_modal">Add user Person</h6>
+                <button type="button" class="close" aria-label="Close" ng-click="closeModal('add_user','adduser')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="adduser">
+                    <div class="row">
+                        <div class="form-group col-sm-6 mb-2">
+                            <label>Faculty Id</label>
+                            <input class="form-control" type="text" style="text-transform:uppercase" ng-model="incharge.employeeId" required>
+                            <div class="invalid-feedback">
+                                please enter Faculty Id
+                            </div>
+                        </div>
+
+                        <div class="form-group col-sm-6 mb-2">
+                            <label>Name</label>
+                            <input class="form-control" type="text" style="text-transform:uppercase" ng-model="incharge.name" required>
+                            <div class="invalid-feedback">
+                                please enter Name
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-6 mb-2">
+                            <label>Mobile No</label>
+                            <input class="form-control" type="nember" ng-model="incharge.mobileNo" required>
+                            <div class="invalid-feedback">
+                                please enter Mobile No
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6 mb-2">
+                            <label>Email ID</label>
+                            <input class="form-control" type="text" style="text-transform:lowercase" ng-model="incharge.email" required>
+                            <div class="invalid-feedback">
+                                please enter Email Id
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" ng-click="closeModal('add_user','adduser')">Close</button>
+                <button type="button" class="btn btn-primary" ng-click="add(incharge)">
+                    <i class="fas fa-save mr-2"></i>Add
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal -->
