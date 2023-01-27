@@ -30,7 +30,7 @@ router.post('/adduser', async function (req, res) {
 
 router.put('/:id', async function (req, res) {
     try {
-        let response = await userServices.update(req.body);
+        let response = await userServices.update(req.body._id,req.body);
         appLogger.info("User details Updated Successfully");
         res.send(response);
     } catch (error) {

@@ -9,6 +9,7 @@
         $scope.page.currentPage = 0;
         $scope.page.pageSize = 5;
         $scope.page.searchBox = '';
+
         $scope.hideErrors = function (id) {
             $scope.incharge = {};
             bootstrapError.hideErrors(id);
@@ -67,7 +68,7 @@
                         $("html").stop().animate({ scrollTop: 0 }, 200);
                         $scope.success = true;
                         $scope.successMsg = "Successfully added the user infomation";
-                        $scope.users.push($scope.incharge);
+                        getAlluser();
                         $('#add_user').modal("hide");
                         $timeout(function () {
                             $scope.success = false;
@@ -106,25 +107,59 @@
         //     return -1;
         // };
     
-        $scope.edit=function(employee){
+        $scope.openEditModal=function(employee){
             $scope.incharge = employee
-            $("#add_user").modal({
+            $("#update_user").modal({
                 backdrop: 'static',
                 keyboard: false
+            });  
+        };
+
+        $scope.updateModal = function (employee) {
+            $scope.incharge = employee
+            $scope.incharge.employeeId = ($scope.incharge.employeeId).toUpperCase();
+            $scope.incharge.name = ($scope.incharge.name).toUpperCase();
+            $scope.incharge.email = ($scope.incharge.email).toLowerCase();
+            userServices.update($scope.incharge._id, $scope.incharge, function (err, res) {
+                if (!err) {
+                    $("html").stop().animate({ scrollTop: 0 }, 200);
+                    $scope.success = true;
+                    $scope.successMsg = "Successfully updated the user infomation";
+                    getAlluser();
+                  //  $scope.users.push($scope.incharge);
+                    $('#update_user').modal("hide");
+                    $timeout(function () {
+                        $scope.success = false;
+                        $scope.successMsg = "";
+                    }, 2000);
+                    $timeout(function () {
+                        $scope.success = false;
+                        $scope.successMsg = "";
+                    }, 2000);
+                }
+                else {
+                    $("html").stop().animate({ scrollTop: 0 }, 200);
+                    $scope.error = true;
+                    $scope.errorMsg = (err.data && err.data.message) ? err.data.message : err.statusText;
+                    $timeout(function () {
+                        $scope.error = false;
+                        $scope.errorMsg = "";
+                    }, 2000);
+                }
             });
-            
         };
+
     
-        $scope.save=function(){
-            var index = select($scope.employeeId);
-            $scope.users[index].name=$scope.name;
-            $scope.users[index].email=$scope.email;
-            $scope.users[index].mobileNo=$scope.mobileNo;
-            $scope.employeeId='';
-            $scope.name='';
-            $scope.email='';
-            $scope.mobileNo='';
-        };
+        // $scope.save=function(){
+        //     var index = select($scope.employeeId);
+        //     $scope.users[index].name=$scope.name;
+        //     $scope.users[index].email=$scope.email;
+        //     $scope.users[index].mobileNo=$scope.mobileNo;
+        //     $scope.employeeId='';
+        //     $scope.name='';
+        //     $scope.email='';
+        //     $scope.mobileNo='';
+        // };
     }
     myApp.service('userServices', userServices);
     userServices.$inject = ['$http'];
@@ -156,9 +191,9 @@
                 callback(error, null);
             });
         };
-        this.update = function (details, callback) {
+        this.update = function (id, details, callback) {
             var request = {
-                url: "user/:id",
+                url: "user/"+id,
                 method: 'PUT',
                 data: details,
                 timeout: 2 * 60 * 1000,

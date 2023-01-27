@@ -23,9 +23,9 @@ function addUser(data) {
 }
 
 
-function update(data) {
-    return new promise((resolve, reject) =>{
-        userDao.updateById(id, data).then((response)=>{
+function update(id,data) {
+    return new Promise((resolve, reject) =>{
+        userDao.updateById(id,data).then((response)=>{
             resolve(response)
         }).catch((err)=>{
             reject(err)

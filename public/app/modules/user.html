@@ -65,7 +65,7 @@
                             <td data-title="Email ID">{{user.email}}</td>
                             <td data-title="Mobile No">{{user.mobileNo}}</td>
                             <td data-title="Action" class="action-btn px-0">
-                                <a class="btn btn-primary-2 rounded-0 py-0"  ng-click='edit(user)'>
+                                <a class="btn btn-primary-2 rounded-0 py-0" data-toggle="modal" data-target="#update_user" ng-click="openEditModal(user)">
                                     <i class="fas fa-edit mr-1"></i> Edit
                                 </a>
                                 <a class="btn btn-danger rounded-0 py-0" ng-click='del(user._id)'>
@@ -160,8 +160,67 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" ng-click="closeModal('add_user','adduser')">Close</button>
-                <button type="button" class="btn btn-primary" ng-click="add(incharge)">
+                <button type="button" class="btn btn-primary" ng-click="add()">
                     <i class="fas fa-save mr-2"></i>Add
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal -->
+
+<!-- Modal -->
+<div class="modal fade " id="update_user" tabindex="-1" role="dialog" aria-labelledby="update_user_modal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="update_user_modal">update user Person details</h6>
+                <button type="button" class="close" aria-label="Close" ng-click="closeModal('update_user','updateuser')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="updateuser">
+                    <div class="row">
+                        <div class="form-group col-sm-6 mb-2">
+                            <label>Faculty Id</label>
+                            <input class="form-control" type="text" style="text-transform:uppercase" ng-model="incharge.employeeId" required>
+                            <div class="invalid-feedback">
+                                please enter Faculty Id
+                            </div>
+                        </div>
+
+                        <div class="form-group col-sm-6 mb-2">
+                            <label>Name</label>
+                            <input class="form-control" type="text" style="text-transform:uppercase" ng-model="incharge.name" required>
+                            <div class="invalid-feedback">
+                                please enter Name
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-6 mb-2">
+                            <label>Mobile No</label>
+                            <input class="form-control" type="nember" ng-model="incharge.mobileNo" required>
+                            <div class="invalid-feedback">
+                                please enter Mobile No
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6 mb-2">
+                            <label>Email ID</label>
+                            <input class="form-control" type="text" style="text-transform:lowercase" ng-model="incharge.email" required>
+                            <div class="invalid-feedback">
+                                please enter Email Id
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" ng-click="closeModal('update_user','updateuser')">Close</button>
+                <button type="button" class="btn btn-primary" ng-click="updateModal(incharge)">
+                    <i class="fas fa-save mr-2"></i>update
                 </button>
             </div>
         </div>

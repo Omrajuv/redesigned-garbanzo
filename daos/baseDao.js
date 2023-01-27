@@ -233,9 +233,9 @@ function updateById(id, detailsToUpdate) {
             }
     
             if (!err) {
-                resolve(null, result);
+                resolve(result);
             } else {
-                reject(err, null);
+                reject(err);
             }
         });
     })
